@@ -1,11 +1,12 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- Customize Treesitter
 
 ---@type LazySpec
 return {
   "nvim-treesitter/nvim-treesitter",
   opts = {
+    highlight = {
+      enable = true, -- false will disable the whole extension
+    },
     ensure_installed = {
       "lua",
       "vim",
