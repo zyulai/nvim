@@ -16,7 +16,16 @@ return {
         end,
       },
       -- Python: autopep8 遵循 pep8 风格
-      null_ls.builtins.formatting.autopep8,
+      null_ls.builtins.formatting.black.with {
+        extra_args = function(params)
+          -- 如果项目存在 pyproject.toml 则自动遵循
+          if vim.fn.filereadable(params.root .. "/pyproject.toml") == 1 then
+            return { "--config", params.root .. "/pyproject.toml" }
+          end
+          -- 没有配置文件时默认启用严格模式（包含 88 字符换行）
+          return { "--line-length", "79" }
+        end,
+      },
       -- Shell: shfmt 使用 2 个空格缩进（模拟 google 风格）
       null_ls.builtins.formatting.shfmt.with {
         extra_args = { "-i", "2" },
