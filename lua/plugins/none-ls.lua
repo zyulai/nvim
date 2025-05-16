@@ -22,8 +22,10 @@ return {
           if vim.fn.filereadable(params.root .. "/pyproject.toml") == 1 then
             return { "--config", params.root .. "/pyproject.toml" }
           end
-          -- 没有配置文件时默认启用严格模式（包含 88 字符换行）
-          return { "--line-length", "79" }
+          -- 没有配置文件时默认启用~/.config/nvim/.clang-format
+          local user_clang_format = vim.fn.expand "$HOME/.config/nvim/.clang-format"
+          -- vim.notify("Using " .. user_clang_format, vim.log.levels.INFO)
+          return { "--style=file:" .. user_clang_format }
         end,
       },
       -- Shell: shfmt 使用 2 个空格缩进（模拟 google 风格）
