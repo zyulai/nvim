@@ -1,5 +1,23 @@
 -- This file simply bootstraps the installation of Lazy.nvim and then calls other files for execution
 -- This file doesn't necessarily need to be touched, BE CAUTIOUS editing this file and proceed at your own risk.
+-- ~/.config/nvim/init.lua
+
+-- OSC52 剪贴板配置（放在 init.lua 最前面或插件配置区）
+local ssh_connection = vim.fn.getenv "SSH_CONNECTION"
+if ssh_connection ~= vim.NIL then
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy "+",
+      ["*"] = require("vim.ui.clipboard.osc52").copy "*",
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste "+",
+      ["*"] = require("vim.ui.clipboard.osc52").paste "*",
+    },
+  }
+end
+
 local lazypath = vim.env.LAZY or vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not (vim.env.LAZY or (vim.uv or vim.loop).fs_stat(lazypath)) then
   -- stylua: ignore
